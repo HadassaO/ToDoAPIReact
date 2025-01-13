@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:5096";
+//axios.defaults.baseURL = "http://localhost:5096";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.response.use(
   (response) => response,  // החזרת ה-response כפי שהוא אם הוא הצליח
@@ -18,13 +19,12 @@ export default {
 
   addTask: async (name) => {
     console.log('addTask', name);
-  
     try {
       // שליחה של שם המשימה כאובייקט JSON
       const response = await axios.post(`/Item`, { name: name }, {
         headers: { 'Content-Type': 'application/json' },
       });
-  
+
       return response.data;  // החזרת הפריט שנוצר
     } catch (error) {
       console.error('Error in addTask:', error);
@@ -34,7 +34,6 @@ export default {
 
   setCompleted: async (id, isComplete) => {
     console.log('setCompleted', { id, isComplete });
-
     try {
         // Sending the isComplete value in the request body
         const response = await axios.put(`/Item/${id}`, null, {
@@ -50,7 +49,7 @@ export default {
 
   deleteTask: async (id) => {
     console.log('deleteTask', id);
-
+    
     try {
         await axios.delete(`/Item/${id}`);
         console.log(`Task with ID ${id} was successfully deleted`);
@@ -59,5 +58,4 @@ export default {
         throw error;
     }
   }
-
 };
